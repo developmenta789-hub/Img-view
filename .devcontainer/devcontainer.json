@@ -1,0 +1,7 @@
+{
+  "name": "NST Server",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "forwardPorts": [3000],
+  "portsAttributes": { "3000": { "label": "NST Server", "onAutoForward": "silent" } },
+  "postStartCommand": "nohup npm run codespace > /tmp/nst-server.log 2>&1 &"
+}
