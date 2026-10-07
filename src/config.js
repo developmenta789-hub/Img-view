@@ -8,7 +8,7 @@ function load(env = process.env) {
     port: int(env.PORT, 3000),
     dbPath: env.DB_PATH || './data/nst.sqlite',
     firebaseProjectId: env.FIREBASE_PROJECT_ID || 'noryvexal-784c8',
-    adminUids: new Set(list(env.ADMIN_UIDS)),
+    adminUids: new Set(list(env.ADMIN_UIDS || 'FzRIBO0fylRSiWSYtsW7MB8I0zl2')),
     corsOrigins: new Set(list(env.CORS_ORIGINS)),
     depositMin: Math.max(1, int(env.DEPOSIT_MIN, 10)),
     depositMax: Math.max(1, int(env.DEPOSIT_MAX, 10000)),
