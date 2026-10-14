@@ -1,3 +1,7 @@
+> **BACKEND PLAN 2026-10-14:** server ab Firestore par shift ho raha hai (Firebase Admin SDK), SQLite naye kaam ke liye nahi. Poora plan, niyam aur TASK LOG root `../README.md` ke sabse upar. Naye routes `/api/v2/...`: wallet, wallet/history, deposit/config, deposits, deposits/mine, admin/deposits (+proof, approve, reject), admin/payment-info, admin/deposit-settings, withdraw/config, withdrawals (+mine, proof), admin/withdrawals (+proof, approve, reject), admin/withdraw-settings, tournaments/:tid/join. Env: `FIREBASE_SERVICE_ACCOUNT_B64`. Tests: `npm test` (54).
+
+> **ZIP RULE:** zip chhoti rakho. `build/`, `.gradle/`, `node_modules/`, `*.apk`, `*.class`, `*.dex`, `*.log` zip mein mat daalo (Termux build se khud ban jaate hain). Poori detail aur command: root `../README.md` (top box + section "RULE FOR EVERY AI: how to give the project zip").
+
 # NST Server (deposit server, TEST version)
 
 Node.js 22 + SQLite (`node:sqlite`), **zero dependencies** (no `npm install` needed). Abhi sirf **Payvex ka Deposit screen** isse juda hai.
@@ -66,3 +70,21 @@ cd "NST Server"
 ADMIN_UIDS=<uid> npm start      # http://localhost:3000
 npm test                         # 22 tests
 ```
+
+## 8. v2 (Firestore) owner routes: result, complete, cancel (T5, 2026-10-14)
+| Route | Kaam |
+|---|---|
+| `POST /api/v2/admin/tournaments/:tid/result` `{players:[{uid,kills,coins}], complete?}` | prize + kills save: `prizeCredits`, `results/{tid}/players`, wallet (winnings), `leaderboard`, `leaderboardWeeks`. Ek player ek baar. Total coins <= prizePool, kills <= joined - 1 |
+| `POST /api/v2/admin/tournaments/:tid/complete` | ongoing > completed + `results/{tid}` summary |
+| `POST /api/v2/admin/tournaments/:tid/cancel` | cancelled + sab ko fee wapas (`refunds`, ledger `refund_*`); dobara call karne par sirf bache hue ko |
+Week rule (IST Monday) = `src/weekkey.js`, Admin `Week.java` aur Arena `weekKey()` jaisa hi. Tests: `npm test` (73).
+
+## 9. v2 owner routes: players (T6, 2026-10-14)
+| Route | Kaam |
+|---|---|
+| `GET /api/v2/admin/users/:uid` | profile, status, game verify, wallet |
+| `POST .../status` `{status, hours?, reason?}` | active / suspended (1..8760 ghante) / banned; reason 3..200; admin par nahi |
+| `POST .../game-verified` `{value}` | true sirf poore game details par |
+| `POST .../activity` `{matchesPlayed, totalKill}` | 0..1,000,000 |
+| `POST .../wallet` `{coins, winCoins, note?}` | exact set, log `walletEdits` + ledger `admin_*` |
+Tests: `npm test` (82).
