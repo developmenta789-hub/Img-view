@@ -11,9 +11,9 @@ async function fakeVerify(token) {
   return { uid, name: name || '' };
 }
 
-async function start(env = {}) {
+async function start(env = {}, fsdbOverride = null) {
   const config = load({ ADMIN_UIDS: 'owner', DB_PATH: ':memory:', ...env });
-  const app = createApp({ config, verifyToken: fakeVerify });
+  const app = createApp({ config, verifyToken: fakeVerify, fsdb: fsdbOverride });
   await new Promise((r) => app.server.listen(0, '127.0.0.1', r));
   const base = 'http://127.0.0.1:' + app.server.address().port;
   const call = async (method, path, { token, body, headers } = {}) => {
