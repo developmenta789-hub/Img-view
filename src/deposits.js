@@ -171,4 +171,5 @@ function review(db, adminUid, id, approve) {
 module.exports = {
   depositConfig, createDeposit, listMine, adminList, adminProof, review,
   getPaymentInfo, setPaymentInfo, delSetting, setDepositSettings, startOfDay,
+  decodeJpeg, minAmount, UPI_RE, ID_RE,
 };
