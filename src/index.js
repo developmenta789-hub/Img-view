@@ -16,6 +16,7 @@ const fsm = require('./fsmatches');
 const fsr = require('./fsresults');
 const fsc = require('./fscancel');
 const fsu = require('./fsusers');
+const fsl = require('./fslang');
 const evasion = require('./fsevasion');
 const { openFirestore, need } = require('./firestore');
 const { createAdminCheck } = require('./admin');
@@ -161,6 +162,10 @@ function createApp({ config = load(), db = open(config.dbPath), verifyToken, fsd
     }],
     ['POST', /^\/api\/v2\/admin\/tournaments\/([A-Za-z0-9_-]{1,60})\/complete$/, 'admin', ({ m }) => fsr.completeMatch(need(fsdb), m[1])],
     ['POST', /^\/api\/v2\/admin\/tournaments\/([A-Za-z0-9_-]{1,60})\/cancel$/, 'admin', ({ m }) => fsc.cancelMatch(need(fsdb), m[1])],
+
+    // v2 language (Arena website + Payvex): the server is the only writer of userLang/{uid}; both apps read it live from Firestore
+    ['GET', /^\/api\/v2\/lang$/, 'user', ({ user }) => fsl.getLang(need(fsdb), user.uid)],
+    ['POST', /^\/api\/v2\/lang$/, 'user', ({ user, body }) => fsl.setLang(need(fsdb), user.uid, body)],
 
     // v2 ban evasion: Arena calls this after signup and before saving game details ({ ingameName, gameUid } = the values about to be saved)
     ['POST', /^\/api\/v2\/me\/check$/, 'user', async ({ user, body }) => {
