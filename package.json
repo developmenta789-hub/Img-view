@@ -1,14 +1,19 @@
 {
   "name": "nst-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Deposit server for Payvex (Node.js + SQLite, zero dependencies)",
+  "description": "NST Server: Node.js backend for Noryvexal (Firestore via Firebase Admin SDK)",
   "main": "src/index.js",
-  "engines": { "node": ">=22.13" },
+  "engines": {
+    "node": ">=22.13"
+  },
   "scripts": {
     "start": "node src/index.js",
     "test": "node --test \"test/*.test.js\"",
     "publish-url": "node scripts/publish-url.js",
     "codespace": "node scripts/publish-url.js --push && node src/index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
   }
 }
