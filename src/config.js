@@ -13,8 +13,11 @@ function load(env = process.env) {
     depositMin: Math.max(1, int(env.DEPOSIT_MIN, 10)),
     depositMax: Math.max(1, int(env.DEPOSIT_MAX, 10000)),
     depositDailyLimit: Math.max(0, int(env.DEPOSIT_DAILY_LIMIT, 0)),
+    withdrawMaxPending: Math.max(1, int(env.WITHDRAW_MAX_PENDING, 3)),
     depositMaxPending: Math.max(1, int(env.DEPOSIT_MAX_PENDING, 5)),
     tzOffsetMin: int(env.TZ_OFFSET_MIN, 330),
+    arenaUrl: env.ARENA_URL || 'https://developmenta789-hub.github.io/Noryvexal-Arena/',
+    pushEnabled: env.PUSH_ENABLED !== '0',
     maxImgBytes: 300 * 1024,
     maxThumbBytes: 40 * 1024,
   };
